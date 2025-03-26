@@ -1,16 +1,38 @@
-import React from "react";
-import { motion } from "framer-motion";
-import AboutPng from "../../assets/about.png";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import AboutPng1 from "../../assets/about/about1.png";
+import AboutPng2 from "../../assets/about/about1.png";
+import AboutPng3 from "../../assets/about/about1.png";
+
+const images = [AboutPng1, AboutPng2, AboutPng3];
 
 const About = () => {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [index]);
+
+  const prevSlide = () => {
+    setIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
+  };
+
+  const nextSlide = () => {
+    setIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
   return (
-    <section className="bg-secondary text-white py-20 px-8">
+    <section id="about" className="bg-secondary text-white py-40 px-8">
       <div className="container mx-auto flex flex-col-reverse lg:flex-row items-center justify-between gap-12">
         {/* Text */}
         <motion.div
           initial={{ opacity: 0, x: -100 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1, delay: 0.2 }}
           className="max-w-2xl text-center lg:text-left"
         >
           <h2 className="text-4xl font-bold mb-6">About Us</h2>
@@ -31,19 +53,48 @@ const About = () => {
           </p>
         </motion.div>
 
-        {/* Images */}
-        <motion.div
-          initial={{ opacity: 0, x: 100 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1 }}
-          className="w-full max-w-md"
-        >
-          <img
-            src={AboutPng}
-            alt="About"
-            className="rounded-xl shadow-lg w-full"
-          />
-        </motion.div>
+        {/* Image Slider */}
+        <div className="relative flex flex-col items-center justify-center w-full max-w-md lg:max-w-lg">
+          {/* Tombol Navigasi Kiri */}
+          <button
+            className="absolute left-[-50px] bg-gray-800 bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition"
+            onClick={prevSlide}
+          >
+            <ChevronLeft size={24} />
+          </button>
+
+          {/* Gambar Slider dengan efek geser */}
+          <div className="overflow-hidden w-full rounded-xl shadow-lg">
+            <div
+              className="flex transition-transform duration-700 ease-in-out"
+              style={{ transform: `translateX(-${index * 100}%)` }}
+            >
+              {images.map((img, i) => (
+                <img key={i} src={img} alt="About" className="w-full flex-shrink-0" />
+              ))}
+            </div>
+          </div>
+
+          {/* Tombol Navigasi Kanan */}
+          <button
+            className="absolute right-[-50px] bg-gray-800 bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition"
+            onClick={nextSlide}
+          >
+            <ChevronRight size={24} />
+          </button>
+
+          {/* Indikator Slide */}
+          <div className="flex gap-2 mt-4">
+            {images.map((_, i) => (
+              <div
+                key={i}
+                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  i === index ? "bg-white" : "bg-gray-500"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -15,7 +15,7 @@ import promo3 from "../../assets/promo/promo3.png";
       oldPrice: "Rp42.000",
       discount: "-11%",
       link: "/",
-      delay: 0.2,
+      delay: 0.1,
     },
     {
       id: 2,
@@ -25,7 +25,7 @@ import promo3 from "../../assets/promo/promo3.png";
       oldPrice: "Rp15.500",
       discount: "-5%",
       link: "/",
-      delay: 0.4,
+      delay: 0.2,
     },
     {
       id: 3,
@@ -35,7 +35,7 @@ import promo3 from "../../assets/promo/promo3.png";
       oldPrice: "Rp34.000",
       discount: "-5%",
       link: "/",
-      delay: 0.6,
+      delay: 0.3,
     },
     {
       id: 4,
@@ -45,7 +45,7 @@ import promo3 from "../../assets/promo/promo3.png";
       oldPrice: "Rp34.000",
       discount: "-5%",
       link: "/",
-      delay: 0.8,
+      delay: 0.4,
     },
     {
       id: 5,
@@ -55,7 +55,7 @@ import promo3 from "../../assets/promo/promo3.png";
       oldPrice: "Rp34.000",
       discount: "-5%",
       link: "/",
-      delay: 1.0,
+      delay: 0.5,
     },
     {
       id: 6,
@@ -65,18 +65,18 @@ import promo3 from "../../assets/promo/promo3.png";
       oldPrice: "Rp34.000",
       discount: "-5%",
       link: "/",
-      delay: 1.2,
+      delay: 0.6,
     },
   ];
 
 const Promo = () => {
   return (
-    <div className="max-w-8xl mx-auto p-6">
+    <div id="promo" className="max-w-8xl mx-auto py-40 p-6">
       {/* Diskon */}
       <motion.div
         initial={{ opacity: 0, x: -100 }}
         whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1, delay: 1.0 }}
+        transition={{ duration: 1, delay: 0.6 }}
         className="grid grid-cols-1 md:grid-cols-2 gap-6"
       >
         {[1, 2].map((diskon) => (
@@ -87,9 +87,13 @@ const Promo = () => {
               </h2>
               <p className="text-white text-lg font-semibold">Untuk semua alat tulis</p>
               <p className="text-secondary text-md font-poppins font-semibold">Lengkapi kebutuhan belajarmu</p>
-              <button className="mt-4 bg-secondary text-white px-5 py-3 rounded-full shadow-md text-lg font-semibold">
+              <motion.button 
+              initial="hidden"
+              whileInView={"visible"}
+              whileHover={{ scale: 1.1 }}
+              className="mt-4 bg-secondary text-white px-5 py-3 rounded-full shadow-md text-lg font-semibold">
                 CEK SEKARANG ➜
-              </button>
+              </motion.button>
             </div>
             <img src={diskonPng} alt="Diskon" className="w-40" />
           </div>

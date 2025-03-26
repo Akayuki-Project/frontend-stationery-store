@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import Product1 from "../../assets/products/product1.png";
 import Product2 from "../../assets/products/product2.png";
 import Product3 from "../../assets/products/product3.png";
@@ -106,22 +107,14 @@ const ProductData = [
 
 const Product = () => {
   return (
-    <section className="container mx-auto py-12 px-6">
-      <motion.h1
-        initial={{ opacity: 0, x: -100 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1, delay: 0.2 }}
-        className="text-2xl font-bold text-left pb-6 uppercase"
-      >
-        Produk Terbaru
-      </motion.h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <section id="/product" className="container mx-auto py-12 px-6 md:px-0">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 min-h-screen items-center justify-center py-20 lg:py-20">
         {ProductData.map((product) => (
           <motion.div
             key={product.id}
             initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
             className="bg-white rounded-xl shadow-md flex items-center p-4 gap-4 hover:shadow-lg"
           >
             {/* Images Product */}

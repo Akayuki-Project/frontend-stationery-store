@@ -1,16 +1,16 @@
 import React from 'react';
 import logoPng from '../../assets/logo.png';
 import { BiSearch } from "react-icons/bi";
-import { MdOutlineShoppingCart } from 'react-icons/md';
 import { MdMenu } from 'react-icons/md';
-import ResponsiveMenu from './ResponsiveMenu';
+import ResponsiveMenu from './Responsive';
 import { motion } from 'framer-motion';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const NavbarMenu = [
     {
         id: 1,
         title: 'Home',
-        link: '/'
+        link: '#home'
     },
     {
         id: 2,
@@ -20,20 +20,49 @@ const NavbarMenu = [
     {
         id: 3,
         title: 'Contact',
-        link: '/contact'
+        link: '#contact'
     },
     {
         id: 4,
         title: 'About',
-        link: '/about'
+        link: '#about'
     },
 ]
 
 const Navbar = () => {
     const [open, setOpen] = React.useState(false);
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const handleNavigation = (menu) => {
+      if (menu.link.startsWith("#")) {
+          const sectionId = menu.link.substring(1);
+  
+          if (location.pathname === "/") {
+              setTimeout(() => {
+                  document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+              }, 100);
+          } else {
+              navigate("/", { replace: true });
+  
+              const checkSection = setInterval(() => {
+                  const element = document.getElementById(sectionId);
+                  if (element) {
+                      element.scrollIntoView({ behavior: "smooth" });
+                      clearInterval(checkSection);
+                  }
+              }, 100);
+          }
+      } else {
+          navigate(menu.link);
+      }
+  
+      setOpen(false);
+  };  
+
   return (
     <>
-    <nav className="bg-primary p-3 flex items-center justify-between text-gray-500">
+    <nav className="bg-primary p-3 flex items-center justify-between text-gray-500 fixed top-0 left-0 w-full z-50">
       <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -58,11 +87,12 @@ const Navbar = () => {
             <ul className="flex items-center gap-6">
             {NavbarMenu.map((menu) => (
                 <li key={menu.id}>
-                    <a 
-                    href={menu.link}
-                    className="inline-block py-1 px-3 hover:text-white hover:shadow-[0_3px_0_-1px_#fff] font-semibold"
+                    <button
+                      onClick={() => handleNavigation(menu)}
+                      className="inline-block py-1 px-3 hover:text-white hover:shadow-[0_3px_0_-1px_#fff] font-semibold"
                     >
-                    {menu.title}</a>
+                    {menu.title}
+                  </button>
                 </li>
             ))}
             </ul>
@@ -74,7 +104,7 @@ const Navbar = () => {
       </motion.div>
     </nav>
     {/* Mobile Menu section */}
-    <ResponsiveMenu open={open}/>
+    <ResponsiveMenu open={open} setOpen={setOpen} />
     </>
   );
 };
