@@ -5,8 +5,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 const NavbarMenu = [
     { id: 1, title: 'Home', link: '#home' },
     { id: 2, title: 'Product', link: '/product' },
-    { id: 3, title: 'Contact', link: '#contact' },
-    { id: 4, title: 'About', link: '#about' },
+    { id: 3, title: 'Contact', link: '/contact' },
+    { id: 4, title: 'About', link: '/about' },
 ];
 
 const Responsive = ({ open, setOpen }) => {
@@ -54,8 +54,8 @@ const Responsive = ({ open, setOpen }) => {
                     initial={{ opacity: 0, y: -100 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -100 }}
-                    transition={{ duration: 0.3 }}
-                    className="fixed top-20 left-0 w-full z-20"
+                    transition={{ duration: 0.2 }}
+                    className="top-20 left-0 w-full z-20 fixed"
                 >
                     <div className="text-xl font-semibold uppercase bg-primary text-white py-10 m-6 rounded-3xl">
                         <ul className="flex flex-col items-center gap-10">

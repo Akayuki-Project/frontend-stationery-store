@@ -13,7 +13,7 @@ const Hero = () => {
         <div className="flex flex-col justify-center py-14 md:py-0 relative z-10">
             <div className="text-center md:text-left space-y-6 lg:max-w-[450px]">
                 <motion.h1
-                variants={FadeRight(0.4)}
+                variants={FadeRight(0.3)}
                 initial="hidden"
                 animate="visible"
                 className="text-3xl lg:text-4xl leading-relaxed xl:leading-loose font-light"
@@ -21,7 +21,7 @@ const Hero = () => {
                   P E N A K U
                 </motion.h1>
                 <motion.h1
-                variants={FadeRight(0.7)}
+                variants={FadeRight(0.6)}
                 initial="hidden"
                 animate="visible"
                 className="text-5xl lg:text-6xl leading-relaxed xl:leading-loose font-serif font-semibold"
@@ -29,7 +29,7 @@ const Hero = () => {
                   Stationery Store
                 </motion.h1>
                 <motion.p 
-                variants={FadeRight(1.0)}
+                variants={FadeRight(0.9)}
                 initial="hidden"
                 animate="visible"
                 className="text-white text-lg lg:text-xl font-poppins"

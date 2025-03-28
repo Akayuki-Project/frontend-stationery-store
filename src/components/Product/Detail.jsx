@@ -4,23 +4,32 @@ import detail1 from "../../assets/detail/detail1.png";
 const DetailProduct = () => {
   const [quantity, setQuantity] = useState(1);
 
+  // Fungsi untuk menangani perubahan input kuantitas
+  const handleQuantityChange = (e) => {
+    const value = parseInt(e.target.value) || 1;
+    setQuantity(value < 1 ? 1 : value); // Minimal 1
+  };
+
   return (
-    <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
+    <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-10 min-h-screen mt-24">
       {/* Bagian atas (Gambar & Info Produk) */}
-      <div className="flex flex-col md:flex-row items-center gap-6">
+      <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+        {/* Gambar Produk */}
         <img
           src={detail1}
           alt="Koreksi Tape Mini Kamera Pastel"
-          className="w-60 h-60 object-cover rounded-lg"
+          className="w-full md:w-1/2 max-w-sm object-cover rounded-lg"
         />
-        <div>
-          <h2 className="text-lg font-semibold">
+
+        {/* Info Produk */}
+        <div className="w-full md:w-1/2">
+          <h2 className="text-xl md:text-2xl font-semibold">
             Koreksi Tape Mini Kamera Pastel
           </h2>
           <div className="flex items-center gap-1 text-yellow-500 text-sm">
             ⭐ 4.9 <span className="text-gray-500">| 1.4RB Penilaian</span>
           </div>
-          <p className="text-red-500 text-xl font-bold">Rp28.900</p>
+          <p className="text-red-500 text-2xl font-bold mt-2">Rp28.900</p>
           <p className="text-gray-400 text-sm line-through">Rp35.000</p>
 
           {/* Kuantitas */}
@@ -33,7 +42,13 @@ const DetailProduct = () => {
               >
                 -
               </button>
-              <span className="px-4">{quantity}</span>
+              <input
+                type="number"
+                value={quantity}
+                onChange={handleQuantityChange}
+                className="w-14 text-center border-x outline-none"
+                min="1"
+              />
               <button
                 className="px-3 py-1 bg-gray-200 hover:bg-gray-300 transition"
                 onClick={() => setQuantity((prev) => prev + 1)}
@@ -51,8 +66,8 @@ const DetailProduct = () => {
       </div>
 
       {/* Deskripsi Produk */}
-      <div className="mt-6">
-        <h3 className="text-lg font-semibold">Deskripsi produk</h3>
+      <div className="mt-8">
+        <h3 className="text-lg font-semibold">Deskripsi Produk</h3>
         <p className="text-gray-600 mt-2">
           Produk ini adalah koreksi tape berbentuk kamera vintage yang stylish
           dan unik. Dengan desain menyerupai kamera klasik, koreksi tape ini

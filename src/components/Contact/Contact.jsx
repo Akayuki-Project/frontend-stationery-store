@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { FaPaperPlane, FaCheck, FaPhone, FaEnvelope, FaInstagram, FaFacebook, FaLocationDot } from "react-icons/fa6";
+import { FaPaperPlane, FaCheck, FaPhone, FaEnvelope, FaLocationDot } from "react-icons/fa6";
 
 const Contact = () => {
   const [isSending, setIsSending] = useState(false);
@@ -22,13 +22,13 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="bg-primary text-white py-40 px-8">
+    <section className="bg-secondary text-white py-40 px-8 overflow-hidden">
       <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
         {/* Text & Icons */}
         <motion.div
           initial={{ opacity: 0, x: -100 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
           className="max-w-2xl text-center lg:text-left"
         >
           <h2 className="text-4xl font-bold mb-6">Contact Us</h2>
@@ -49,14 +49,6 @@ const Contact = () => {
               <FaLocationDot className="text-5xl bg-white text-gray-500 p-3 rounded-full shadow-md hover:text-primary transition" />
               <span className="hidden lg:block text-xl">Pageruyung</span>
             </a>
-            <a href="https://instagram.com/stationerystore" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-center">
-              <FaInstagram className="text-5xl bg-white text-gray-500 p-3 rounded-full shadow-md hover:text-primary transition" />
-              <span className="hidden lg:block text-xl">@stationerystore</span>
-            </a>
-            <a href="https://facebook.com/stationerystore" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-center">
-              <FaFacebook className="text-5xl bg-white text-gray-500 p-3 rounded-full shadow-md hover:text-primary transition" />
-              <span className="hidden lg:block text-xl">Stationery Store</span>
-            </a>
         </div>
         </motion.div>
 
@@ -64,8 +56,8 @@ const Contact = () => {
         <motion.div
           initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className="bg-teal-800 p-8 rounded-xl shadow-lg w-full max-w-lg relative"
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="bg-teal-800 p-8 rounded-xl shadow-lg w-full max-w-[320px] lg:max-w-lg relative"
         >
           <h3 className="text-2xl font-semibold mb-6">Send Message</h3>
           <form className="flex flex-col gap-5" onSubmit={handleSend}>
@@ -86,15 +78,15 @@ const Contact = () => {
             />
             <button
               type="submit"
-              className="bg-secondary hover:bg-green-600 text-white py-3 text-lg rounded-lg font-semibold relative overflow-hidden flex justify-center items-center"
+              className="bg-green-600 text-white py-3 text-lg rounded-lg font-semibold relative overflow-hidden flex justify-center items-center"
             >
               {/* Animasi Pesawat */}
               {isSending && (
                 <motion.span
-                  initial={{ x: "-50%" }}
-                  animate={{ x: "100%" }}
-                  transition={{ duration: 1.5, ease: "easeOut" }}
-                  className="absolute left-0 right-0 mx-auto text-white text-2xl"
+                  initial={{ x: "-1000%" }}
+                  animate={{ x: "1000%" }}
+                  transition={{ duration: 1, ease: "easeOut" }}
+                  className="left-0 right-0 mx-auto text-white text-2xl"
                 >
                   <FaPaperPlane />
                 </motion.span>
@@ -105,8 +97,8 @@ const Contact = () => {
                 <motion.span
                   initial={{ scale: 2 }}
                   animate={{ scale: 1 }}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
-                  className="absolute left-0 right-0 mx-auto text-white text-2xl"
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="left-0 right-0 mx-auto text-white text-2xl"
                 >
                   <FaCheck />
                 </motion.span>

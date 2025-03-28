@@ -20,12 +20,12 @@ const NavbarMenu = [
     {
         id: 3,
         title: 'Contact',
-        link: '#contact'
+        link: '/contact'
     },
     {
         id: 4,
         title: 'About',
-        link: '#about'
+        link: '/about'
     },
 ]
 
@@ -66,7 +66,7 @@ const Navbar = () => {
       <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5, delay: 0.5 }}
+      transition={{ duration: 0.7, delay: 0.5 }}
       className="container flex justify-between items-center py-4 md:pt-4"
       >
         {/* Logo section */}

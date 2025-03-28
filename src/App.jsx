@@ -7,6 +7,7 @@ import Footer from './components/Footer/Footer';
 import Contact from './components/Contact/Contact';
 import Promo from './components/Product/Promo';
 import Product from './components/Product/Product';
+import Detail from './components/Product/Detail';
 import ScrollToTop from './scroll/ScrollToTop';
 
 const App = () => {
@@ -17,6 +18,9 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product" element={<Product />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/detail/:id" element={<Detail />} />
       </Routes>
       <Footer />
     </>
@@ -28,8 +32,6 @@ const Home = () => {
     <main className='overflow-x-hidden'>
       <Hero />
       <Promo />
-      <Contact />
-      <About />
     </main>
   );
 };

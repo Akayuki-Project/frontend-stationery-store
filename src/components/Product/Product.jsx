@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Product1 from "../../assets/products/product1.png";
 import Product2 from "../../assets/products/product2.png";
 import Product3 from "../../assets/products/product3.png";
@@ -106,15 +106,17 @@ const ProductData = [
 ];
 
 const Product = () => {
+  const navigate = useNavigate();
   return (
-    <section id="/product" className="container mx-auto py-12 px-6 md:px-0">
+    <section className="container mx-auto py-12 px-6 md:px-0 overflow-hidden">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 min-h-screen items-center justify-center py-20 lg:py-20">
         {ProductData.map((product) => (
           <motion.div
             key={product.id}
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            onClick={() => navigate(`/detail/${product.id}`)}
             className="bg-white rounded-xl shadow-md flex items-center p-4 gap-4 hover:shadow-lg"
           >
             {/* Images Product */}

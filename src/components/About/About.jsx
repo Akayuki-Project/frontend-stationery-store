@@ -26,13 +26,13 @@ const About = () => {
   };
 
   return (
-    <section id="about" className="bg-secondary text-white py-40 px-8">
+    <section className="bg-secondary text-white py-40 px-8 overflow-hidden">
       <div className="container mx-auto flex flex-col-reverse lg:flex-row items-center justify-between gap-12">
         {/* Text */}
         <motion.div
           initial={{ opacity: 0, x: -100 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
           className="max-w-2xl text-center lg:text-left"
         >
           <h2 className="text-4xl font-bold mb-6">About Us</h2>
@@ -54,7 +54,11 @@ const About = () => {
         </motion.div>
 
         {/* Image Slider */}
-        <div className="relative flex flex-col items-center justify-center w-full max-w-md lg:max-w-lg">
+        <motion.div 
+        initial={{ opacity: 0, x: 100 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.7, delay: 0.2 }}
+        className="relative flex flex-col items-center justify-center w-full max-w-[250px] lg:max-w-lg">
           {/* Tombol Navigasi Kiri */}
           <button
             className="absolute left-[-50px] bg-gray-800 bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition"
@@ -94,7 +98,7 @@ const About = () => {
               />
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

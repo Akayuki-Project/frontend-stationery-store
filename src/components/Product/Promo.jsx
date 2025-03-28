@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { FadeLeft } from "../../utility/animation";
 import diskonPng from "../../assets/diskon/diskon1.png";
 import promo1 from "../../assets/promo/promo1.png";
@@ -70,12 +71,13 @@ import promo3 from "../../assets/promo/promo3.png";
   ];
 
 const Promo = () => {
+  const navigate = useNavigate();
   return (
-    <div id="promo" className="max-w-8xl mx-auto py-40 p-6">
+    <div id="promo" className="max-w-8xl mx-auto py-20 p-6">
       {/* Diskon */}
       <motion.div
         initial={{ opacity: 0, x: -100 }}
-        whileInView={{ opacity: 1, x: 0 }}
+        animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 1, delay: 0.6 }}
         className="grid grid-cols-1 md:grid-cols-2 gap-6"
       >
@@ -89,8 +91,10 @@ const Promo = () => {
               <p className="text-secondary text-md font-poppins font-semibold">Lengkapi kebutuhan belajarmu</p>
               <motion.button 
               initial="hidden"
-              whileInView={"visible"}
+              animate={"visible"}
               whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 1.1 }}
+              onClick={() => navigate(`/product`)}
               className="mt-4 bg-secondary text-white px-5 py-3 rounded-full shadow-md text-lg font-semibold">
                 CEK SEKARANG ➜
               </motion.button>
@@ -103,7 +107,7 @@ const Promo = () => {
       {/* Promo */}
       <motion.div
         initial={{ opacity: 0, x: 100 }}
-        whileInView={{ opacity: 1, x: 0 }}
+        animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 1, delay: 0.3 }}
         className="mt-8 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6"
       >
@@ -112,8 +116,10 @@ const Promo = () => {
             key={promo.id}
             variants={FadeLeft(promo.delay)}
             initial="hidden"
-            whileInView={"visible"}
+            animate={"visible"}
             whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 1.1 }}
+            onClick={() => navigate(`/detail/${promo.id}`)}
             className="bg-white p-6 rounded-lg shadow-md text-center"
           >
             <img src={promo.image} alt={promo.name} className="w-full h-40 object-cover rounded-md" />
