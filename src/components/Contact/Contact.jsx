@@ -1,28 +1,47 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import emailjs from 'emailjs-com';
 import { FaPaperPlane, FaCheck, FaPhone, FaEnvelope, FaLocationDot } from "react-icons/fa6";
 
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
+
   const [isSending, setIsSending] = useState(false);
   const [isSent, setIsSent] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSend = (e) => {
     e.preventDefault();
     setIsSending(true);
 
-    setTimeout(() => {
-      setIsSending(false);
-      setIsSent(true);
+    const serviceID = 'service_tz6ngs6';      // Ganti dengan service ID dari EmailJS
+    const templateID = 'template_fgo3bqe';    // Ganti dengan template ID dari EmailJS
+    const publicKey = 'iYDE40Bv-7RKLLP3o';    // Ganti dengan public key dari EmailJS
 
-      // Balik ke normal setelah 2 detik
-      setTimeout(() => {
-        setIsSent(false);
-      }, 2000);
-    }, 1500);
+    emailjs.send(serviceID, templateID, formData, publicKey)
+      .then(() => {
+        setIsSending(false);
+        setIsSent(true);
+        setFormData({ name: '', email: '', message: '' });
+
+        setTimeout(() => setIsSent(false), 2000);
+      })
+      .catch((error) => {
+        setIsSending(false);
+        alert("Gagal mengirim pesan 😭");
+        console.error("EmailJS Error:", error);
+      });
   };
 
   return (
-    <section className="bg-secondary text-white py-40 px-8 overflow-hidden">
+    <section className="bg-secondary text-white py-40 px-6 overflow-hidden">
       <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
         {/* Text & Icons */}
         <motion.div
@@ -49,10 +68,10 @@ const Contact = () => {
               <FaLocationDot className="text-5xl bg-white text-gray-500 p-3 rounded-full shadow-md hover:text-primary transition" />
               <span className="hidden lg:block text-xl">Pageruyung</span>
             </a>
-        </div>
+          </div>
         </motion.div>
 
-        {/* Formulir Contact */}
+        {/* Contact Form */}
         <motion.div
           initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
@@ -63,24 +82,36 @@ const Contact = () => {
           <form className="flex flex-col gap-5" onSubmit={handleSend}>
             <input
               type="text"
+              name="name"
               placeholder="Full Name"
+              value={formData.name}
+              onChange={handleChange}
               className="p-4 text-lg rounded-lg bg-white text-gray-800 focus:outline-none"
+              required
             />
             <input
               type="email"
+              name="email"
               placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
               className="p-4 text-lg rounded-lg bg-white text-gray-800 focus:outline-none"
+              required
             />
             <textarea
+              name="message"
               placeholder="Type your Message"
               rows="5"
+              value={formData.message}
+              onChange={handleChange}
               className="p-4 text-lg rounded-lg bg-white text-gray-800 focus:outline-none"
+              required
             />
             <button
               type="submit"
               className="bg-green-600 text-white py-3 text-lg rounded-lg font-semibold relative overflow-hidden flex justify-center items-center"
             >
-              {/* Animasi Pesawat */}
+              {/* Plane animation */}
               {isSending && (
                 <motion.span
                   initial={{ x: "-1000%" }}
@@ -92,7 +123,7 @@ const Contact = () => {
                 </motion.span>
               )}
 
-              {/* Animasi Checklist */}
+              {/* Checkmark animation */}
               {isSent && (
                 <motion.span
                   initial={{ scale: 2 }}
@@ -104,7 +135,7 @@ const Contact = () => {
                 </motion.span>
               )}
 
-              {/* Default Text Send */}
+              {/* Default Text */}
               {!isSending && !isSent && "Send"}
             </button>
           </form>

@@ -1,0 +1,62 @@
+import React from 'react';
+import { Layout, Menu } from 'antd';
+import {
+    DashboardOutlined,
+    SettingOutlined,
+    FundOutlined,
+    LogoutOutlined,
+} from '@ant-design/icons';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+
+const { Sider } = Layout;
+
+const Sidebar = ({ collapsed, onCollapse }) => {
+const navigate = useNavigate();
+
+    const location = useLocation();
+    const selectedKey = () => {
+        if (location.pathname.includes('/dashboard/products')) return '2';
+        if (location.pathname.includes('/dashboard/banners')) return '3';
+        if (location.pathname.includes('/dashboard')) return '1';
+        return '';
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        navigate('/signin');
+    };
+
+    return (
+        <Sider
+            collapsible
+            collapsed={collapsed}
+            onCollapse={onCollapse}
+            trigger={null}
+            breakpoint="md"
+            collapsedWidth="0"
+            onBreakpoint={(broken) => {
+                if (broken) {
+                    onCollapse(true); // collapse saat layar kecil
+                }
+            }}
+        >
+            <div className="demo-logo-vertical" />
+            <Menu theme="dark" mode="inline" selectedKeys={[selectedKey()]}>
+                <Menu.Item key="1" icon={<DashboardOutlined />}>
+                    <Link to="/dashboard">Dashboard</Link>
+                </Menu.Item>
+                <Menu.Item key="2" icon={<SettingOutlined />}>
+                    <Link to="/dashboard/products">Products</Link>
+                </Menu.Item>
+                <Menu.Item key="3" icon={<FundOutlined />}>
+                    <Link to="/dashboard/banners">Banners</Link>
+                </Menu.Item>
+                <Menu.Item key="4" icon={<LogoutOutlined />}>
+                    <button onClick={handleLogout}>Logout</button>
+                </Menu.Item>
+            </Menu>
+        </Sider>
+    );
+};
+
+export default Sidebar;

@@ -1,143 +1,117 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import Product1 from "../../assets/products/product1.png";
-import Product2 from "../../assets/products/product2.png";
-import Product3 from "../../assets/products/product3.png";
-import Product4 from "../../assets/products/product4.png";
-import Product5 from "../../assets/products/product5.png";
-import Product6 from "../../assets/products/product6.png";
-import Product7 from "../../assets/products/product7.png";
-import Product8 from "../../assets/products/product8.png";
-import Product9 from "../../assets/products/product9.png";
-import Product10 from "../../assets/products/product10.png";
-
-const ProductData = [
-  {
-    id: 1,
-    title: "Tip-Ex Karakter Sumikko Gurashi",
-    price: "Rp28.000",
-    originalPrice: "Rp35.000",
-    rating: 4.9,
-    reviews: "14RB Penilaian",
-    img: Product1,
-  },
-  {
-    id: 2,
-    title: "Koreksi Tape Mini Kamera Pastel",
-    price: "Rp28.000",
-    originalPrice: "Rp35.000",
-    rating: 4.9,
-    reviews: "14RB Penilaian",
-    img: Product6,
-  },
-  {
-    id: 3,
-    title: "Pulpen Kawaii Karakter",
-    price: "Rp28.000",
-    originalPrice: "Rp35.000",
-    rating: 4.9,
-    reviews: "14RB Penilaian",
-    img: Product2,
-  },
-  {
-    id: 4,
-    title: "Elmer’s Glue-All - Lem Cair untuk Kerajinan & DIY",
-    price: "Rp28.000",
-    originalPrice: "Rp35.000",
-    rating: 4.9,
-    reviews: "14RB Penilaian",
-    img: Product7,
-  },
-  {
-    id: 5,
-    title: "Kotak Pensil Simple & Stylish - Grid Edition",
-    price: "Rp28.000",
-    originalPrice: "Rp35.000",
-    rating: 4.9,
-    reviews: "14RB Penilaian",
-    img: Product3,
-  },
-  {
-    id: 6,
-    title: "Stapler Mini Lucu Deli - Warna Pastel",
-    price: "Rp28.000",
-    originalPrice: "Rp35.000",
-    rating: 4.9,
-    reviews: "14RB Penilaian",
-    img: Product8,
-  },
-  {
-    id: 7,
-    title: "Kotak Pensil Simple & Stylish - Grid Edition",
-    price: "Rp28.000",
-    originalPrice: "Rp35.000",
-    rating: 4.9,
-    reviews: "14RB Penilaian",
-    img: Product4,
-  },
-  {
-    id: 8,
-    title: "Desk Organizer Pink - Penyimpanan Alat Tulis Minimalis",
-    price: "Rp28.000",
-    originalPrice: "Rp35.000",
-    rating: 4.9,
-    reviews: "14RB Penilaian",
-    img: Product9,
-  },
-  {
-    id: 9,
-    title: "Kotak Pensil Simple & Stylish - Grid Edition",
-    price: "Rp28.000",
-    originalPrice: "Rp35.000",
-    rating: 4.9,
-    reviews: "14RB Penilaian",
-    img: Product5,
-  },
-  {
-    id: 10,
-    title: "Clipboard Kawaii Pet Bear - Alas Tulis Lucu",
-    price: "Rp28.000",
-    originalPrice: "Rp35.000",
-    rating: 4.9,
-    reviews: "14RB Penilaian",
-    img: Product10,
-  },
-];
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
+import { URL_PRODUCT } from "../../utils/Endpoint";
 
 const Product = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [products, setProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Ambil keyword dari URL
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const keyword = params.get("search") || "";
+    setSearchTerm(keyword);
+  }, [location.search]);
+
+  // Ambil produk dari server
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get(URL_PRODUCT);
+        setProducts(res.data);
+      } catch (err) {
+        console.error("Failed to fetch products", err);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Filter berdasarkan nama produk dan searchTerm
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Update URL saat user ketik manual
+  const handleInputChange = (e) => {
+    const keyword = e.target.value;
+    setSearchTerm(keyword);
+    navigate(`/product?search=${encodeURIComponent(keyword)}`);
+  };
+
   return (
-    <section className="container mx-auto py-12 px-6 md:px-0 overflow-hidden">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 min-h-screen items-center justify-center py-20 lg:py-20">
-        {ProductData.map((product) => (
-          <motion.div
-            key={product.id}
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            onClick={() => navigate(`/detail/${product.id}`)}
-            className="bg-white rounded-xl shadow-md flex items-center p-4 gap-4 hover:shadow-lg"
-          >
-            {/* Images Product */}
-            <img
-              src={product.img}
-              alt={product.title}
-              className="w-32 h-32 object-cover rounded-lg"
-            />
-            {/* Detail Product */}
-            <div className="flex flex-col">
-              <h2 className="text-lg font-semibold">{product.title}</h2>
-              <div className="flex items-center gap-1 text-yellow-500 text-sm">
-                ⭐ {product.rating} • {product.reviews}
-              </div>
-              <p className="text-red-500 font-semibold">{product.price}</p>
-              <p className="text-gray-400 line-through text-sm">
-                {product.originalPrice}
-              </p>
-            </div>
-          </motion.div>
-        ))}
+    <section className="container flex flex-col min-h-screen mx-auto py-12 px-6 md:px-0 overflow-hidden">
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="Cari produk..."
+          value={searchTerm}
+          onChange={handleInputChange}
+          className="w-full md:w-1/2 p-3 border rounded-xl shadow-sm"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-start justify-center py-10">
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => {
+            const finalPrice =
+              product.price - (product.price * (product.discount || 0)) / 100;
+
+            return (
+              <motion.div
+                key={product._id}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.2 }}
+                onClick={() => navigate(`/detail/${product._id}`)}
+                className="bg-white rounded-xl shadow-md flex items-center p-4 gap-4 hover:shadow-lg cursor-pointer"
+              >
+                <img
+                  src={product.thumbnail}
+                  alt={product.name}
+                  className="w-32 h-32 object-cover rounded-lg"
+                />
+                <div className="flex flex-col">
+                  <h2 className="text-lg font-poppins">{product.name}</h2>
+
+                  <p className="font-bold">
+                    Rp{finalPrice.toLocaleString("id-ID")}
+                  </p>
+
+                  {product.discount > 0 && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <p className="text-gray-400 line-through">
+                        Rp{product.price.toLocaleString("id-ID")}
+                      </p>
+                      <span className="text-red-500 font-bold">
+                        {product.discount}%
+                      </span>
+                    </div>
+                  )}
+
+                  {/* ⭐ Rating bintang */}
+                  <div className="flex items-center gap-x-1 text-sm">
+                    <span className="text-yellow-500">⭐</span>
+                    <span className="text-gray-500 font-medium">
+                      {product.rating?.toFixed(1) || "0.0"}
+                    </span>
+                    <p className="text-sm text-gray-500 ml-2">
+                      {product.sold || product.sales || 0} Terjual
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })
+        ) : (
+          <p className="text-gray-600 col-span-3 text-center font-poppins">
+            Tidak ada produk ditemukan 😥
+          </p>
+        )}
       </div>
     </section>
   );

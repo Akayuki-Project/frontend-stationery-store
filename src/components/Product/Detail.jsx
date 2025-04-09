@@ -1,44 +1,141 @@
-import React, { useState } from "react";
-import detail1 from "../../assets/detail/detail1.png";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { URL_PRODUCT } from "../../utils/Endpoint";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
+import { useNavigate } from "react-router-dom";
+
 
 const DetailProduct = () => {
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [userRating, setUserRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const navigate = useNavigate();
 
-  // Fungsi untuk menangani perubahan input kuantitas
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const res = await axios.get(`${URL_PRODUCT}/${id}`);
+        setProduct(res.data);
+      } catch (err) {
+        console.error("Failed to fetch product", err);
+      }
+    };
+
+    fetchProduct();
+
+    const savedRating = localStorage.getItem(`rated_${id}`);
+    if (savedRating) {
+      setUserRating(parseInt(savedRating));
+    }
+  }, [id]);
+
   const handleQuantityChange = (e) => {
     const value = parseInt(e.target.value) || 1;
-    setQuantity(value < 1 ? 1 : value); // Minimal 1
+    setQuantity(value < 1 ? 1 : value);
   };
 
+  // Di bagian handleBuy ganti jadi:
+const handleBuy = () => {
+  navigate(`/checkout/${id}`, {
+    state: { quantity }, // kirim kuantitas ke checkout
+  });
+};
+
+  const handleRating = async (ratingValue) => {
+    if (userRating > 0) return;
+
+    try {
+      const updatedTotalRating = (product.totalRating || 0) + ratingValue;
+      const updatedRatingCount = (product.ratingCount || 0) + 1;
+      const newAverageRating = updatedTotalRating / updatedRatingCount;
+
+      await axios.patch(`${URL_PRODUCT}/${id}`, {
+        totalRating: updatedTotalRating,
+        ratingCount: updatedRatingCount,
+        rating: newAverageRating,
+      });
+
+      setUserRating(ratingValue);
+      localStorage.setItem(`rated_${id}`, ratingValue);
+
+      setProduct((prev) => ({
+        ...prev,
+        totalRating: updatedTotalRating,
+        ratingCount: updatedRatingCount,
+        rating: newAverageRating,
+      }));
+    } catch (err) {
+      console.error("Gagal memberikan rating", err);
+    }
+  };
+
+  if (!product) {
+    return <p className="text-center py-20">Memuat detail produk... 🌀</p>;
+  }
+
+  const finalPrice =
+    product.price - (product.price * (product.discount || 0)) / 100;
+
   return (
-    <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-10 min-h-screen mt-24">
-      {/* Bagian atas (Gambar & Info Produk) */}
-      <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-        {/* Gambar Produk */}
-        <img
-          src={detail1}
-          alt="Koreksi Tape Mini Kamera Pastel"
-          className="w-full md:w-1/2 max-w-sm object-cover rounded-lg"
-        />
+    <div className="max-w-8xl mx-auto px-6 py-8 mt-24 bg-white rounded-lg shadow-md">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+        {/* Kiri: Gambar Produk */}
+        <div className="md:col-span-4">
+          <Zoom>
+            <img
+              src={product.thumbnail}
+              alt={product.name}
+              className="w-full h-auto rounded-lg object-cover cursor-zoom-in"
+            />
+          </Zoom>
+        </div>
 
-        {/* Info Produk */}
-        <div className="w-full md:w-1/2">
-          <h2 className="text-xl md:text-2xl font-semibold">
-            Koreksi Tape Mini Kamera Pastel
+        {/* Tengah: Nama & Deskripsi */}
+        <div className="md:col-span-5">
+          <h2 className="text-2xl font-poppins">
+            {product.name}
           </h2>
-          <div className="flex items-center gap-1 text-yellow-500 text-sm">
-            ⭐ 4.9 <span className="text-gray-500">| 1.4RB Penilaian</span>
-          </div>
-          <p className="text-red-500 text-2xl font-bold mt-2">Rp28.900</p>
-          <p className="text-gray-400 text-sm line-through">Rp35.000</p>
 
-          {/* Kuantitas */}
-          <div className="mt-4">
-            <p className="mb-2">Kuantitas</p>
-            <div className="flex items-center border rounded-lg w-max">
+          <div className="flex items-center gap-1 text-yellow-500 text-sm mt-2 mb-4">
+            ⭐ {product.rating?.toFixed(1) || 0}
+            <span className="text-gray-500 ml-2">
+              | {product.sales || 0} Terjual
+            </span>
+          </div>
+
+          <h3 className="text-lg font-bold mb-2">Deskripsi Produk</h3>
+          <p className="text-gray-500">{product.description}</p>
+        </div>
+
+        {/* Kanan: Form Pembelian */}
+        <div className="md:col-span-3 bg-gray-50 p-6 rounded-lg shadow-inner">
+          <p className="text-2xl font-bold mb-2">
+            Rp{finalPrice.toLocaleString("id-ID")}
+          </p>
+
+          {product.discount > 0 && (
+            <div className="flex items-center gap-2 text-sm mb-4">
+              <p className="text-gray-400 line-through">
+                Rp{product.price.toLocaleString("id-ID")}
+              </p>
+              <span className="text-red-500 font-bold">
+                {product.discount}%
+              </span>
+            </div>
+          )}
+
+          {/* Quantity */}
+          <div className="mb-4">
+            <label className="block mb-1 font-semibold">Kuantitas</label>
+            <div className="flex items-center border rounded-md w-max">
               <button
-                className="px-3 py-1 bg-gray-200 hover:bg-gray-300 transition"
+                className="px-3 py-1 bg-gray-200 hover:bg-gray-300"
                 onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
+                disabled={quantity <= 1}
               >
                 -
               </button>
@@ -48,40 +145,68 @@ const DetailProduct = () => {
                 onChange={handleQuantityChange}
                 className="w-14 text-center border-x outline-none"
                 min="1"
+                max={product.stock || 1}
               />
               <button
-                className="px-3 py-1 bg-gray-200 hover:bg-gray-300 transition"
-                onClick={() => setQuantity((prev) => prev + 1)}
+                className="px-3 py-1 bg-gray-200 hover:bg-gray-300"
+                onClick={() => setQuantity((prev) =>
+                  Math.min(prev + 1, product.stock || prev + 1)
+                )
+              }
+              disabled={quantity >= product.stock}
               >
                 +
               </button>
             </div>
           </div>
 
-          {/* Button Beli Sekarang */}
-          <button className="mt-6 w-full bg-primary text-white text-lg font-semibold py-3 rounded-md shadow-md transition duration-300 hover:bg-green-600">
+          {/* Stok */}
+          <p className="text-sm text-gray-500 mb-4">
+            Stok: {product.stock ?? 0}
+          </p>
+
+          <button
+            onClick={handleBuy}
+            className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-md transition mb-4"
+          >
             Beli Sekarang
           </button>
-        </div>
-      </div>
 
-      {/* Deskripsi Produk */}
-      <div className="mt-8">
-        <h3 className="text-lg font-semibold">Deskripsi Produk</h3>
-        <p className="text-gray-600 mt-2">
-          Produk ini adalah koreksi tape berbentuk kamera vintage yang stylish
-          dan unik. Dengan desain menyerupai kamera klasik, koreksi tape ini
-          tidak hanya berfungsi untuk memperbaiki kesalahan tulisan dengan rapi,
-          tetapi juga menjadi aksesori menarik di meja kerja atau sekolah.
-        </p>
-        <h4 className="font-semibold mt-4">Fitur Produk:</h4>
-        <ul className="list-disc pl-5 text-gray-600">
-          <li>📷 Desain Unik – Bentuk kamera mini dengan detail lensa yang realistis.</li>
-          <li>🎨 Pilihan Warna Menarik – Tersedia dalam warna pastel seperti pink dan abu-abu.</li>
-          <li>✅ Penggunaan Mudah – Cukup geser pada kertas untuk menutupi kesalahan tulisan.</li>
-          <li>♻️ Refillable – Bisa diisi ulang untuk pemakaian jangka panjang.</li>
-          <li>👜 Ukuran Compact – Mudah dibawa ke sekolah, kantor, atau digunakan di rumah.</li>
-        </ul>
+          {/* Rating */}
+          <div>
+            <p className="font-semibold mb-2">Beri Rating</p>
+            <div className="flex gap-1 text-2xl cursor-pointer">
+              {Array.from({ length: 5 }, (_, i) => {
+                const ratingValue = i + 1;
+                return (
+                  <span
+                    key={i}
+                    onClick={() => handleRating(ratingValue)}
+                    onMouseEnter={() => setHoverRating(ratingValue)}
+                    onMouseLeave={() => setHoverRating(0)}
+                    className={`transition-all ${
+                      (hoverRating || userRating || Math.round(product.rating || 0)) >=
+                      ratingValue
+                        ? "text-yellow-500"
+                        : "text-gray-300"
+                    }`}
+                    role="button"
+                  >
+                    {ratingValue <=
+                    (hoverRating || userRating || Math.round(product.rating || 0))
+                      ? "⭐"
+                      : "☆"}
+                  </span>
+                );
+              })}
+              {product.ratingCount > 0 && (
+                <span className="text-base text-gray-500 ml-2">
+                  ({product.ratingCount} Penilaian)
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
