@@ -6,7 +6,6 @@ import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { useNavigate } from "react-router-dom";
 
-
 const DetailProduct = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -39,11 +38,11 @@ const DetailProduct = () => {
   };
 
   // Di bagian handleBuy ganti jadi:
-const handleBuy = () => {
-  navigate(`/checkout/${id}`, {
-    state: { quantity }, // kirim kuantitas ke checkout
-  });
-};
+  const handleBuy = () => {
+    navigate(`/checkout/${id}`, {
+      state: { quantity }, // kirim kuantitas ke checkout
+    });
+  };
 
   const handleRating = async (ratingValue) => {
     if (userRating > 0) return;
@@ -96,9 +95,7 @@ const handleBuy = () => {
 
         {/* Tengah: Nama & Deskripsi */}
         <div className="md:col-span-5">
-          <h2 className="text-2xl font-poppins">
-            {product.name}
-          </h2>
+          <h2 className="text-2xl font-poppins">{product.name}</h2>
 
           <div className="flex items-center gap-1 text-yellow-500 text-sm mt-2 mb-4">
             ⭐ {product.rating?.toFixed(1) || 0}
@@ -113,6 +110,10 @@ const handleBuy = () => {
 
         {/* Kanan: Form Pembelian */}
         <div className="md:col-span-3 bg-gray-50 p-6 rounded-lg shadow-inner">
+          <p className="font-poppins text-2xl font-bold mb-3">
+            Atur jumlah dan catatan
+          </p>
+
           <p className="text-2xl font-bold mb-2">
             Rp{finalPrice.toLocaleString("id-ID")}
           </p>
@@ -149,11 +150,12 @@ const handleBuy = () => {
               />
               <button
                 className="px-3 py-1 bg-gray-200 hover:bg-gray-300"
-                onClick={() => setQuantity((prev) =>
-                  Math.min(prev + 1, product.stock || prev + 1)
-                )
-              }
-              disabled={quantity >= product.stock}
+                onClick={() =>
+                  setQuantity((prev) =>
+                    Math.min(prev + 1, product.stock || prev + 1)
+                  )
+                }
+                disabled={quantity >= product.stock}
               >
                 +
               </button>
@@ -178,32 +180,22 @@ const handleBuy = () => {
             <div className="flex gap-1 text-2xl cursor-pointer">
               {Array.from({ length: 5 }, (_, i) => {
                 const ratingValue = i + 1;
+                const isFilled =
+                  userRating > 0
+                    ? ratingValue <= userRating
+                    : ratingValue <= Math.round(product.rating || 0);
+
                 return (
                   <span
                     key={i}
                     onClick={() => handleRating(ratingValue)}
-                    onMouseEnter={() => setHoverRating(ratingValue)}
-                    onMouseLeave={() => setHoverRating(0)}
-                    className={`transition-all ${
-                      (hoverRating || userRating || Math.round(product.rating || 0)) >=
-                      ratingValue
-                        ? "text-yellow-500"
-                        : "text-gray-300"
-                    }`}
+                    className={isFilled ? "text-yellow-500" : "text-gray-300"}
                     role="button"
                   >
-                    {ratingValue <=
-                    (hoverRating || userRating || Math.round(product.rating || 0))
-                      ? "⭐"
-                      : "☆"}
+                    {isFilled ? "⭐" : "☆"}
                   </span>
                 );
               })}
-              {product.ratingCount > 0 && (
-                <span className="text-base text-gray-500 ml-2">
-                  ({product.ratingCount} Penilaian)
-                </span>
-              )}
             </div>
           </div>
         </div>

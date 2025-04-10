@@ -1,21 +1,21 @@
-import React from 'react';
-import logoPng from '../../assets/logo.png';
+import React from "react";
+import logoPng from "../../assets/logo.png";
 import { BiSearch } from "react-icons/bi";
-import { MdMenu } from 'react-icons/md';
-import ResponsiveMenu from './Responsive';
-import { motion } from 'framer-motion';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { MdMenu } from "react-icons/md";
+import ResponsiveMenu from "./Responsive";
+import { motion } from "framer-motion";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const NavbarMenu = [
-  { id: 1, title: 'Home', link: '#home' },
-  { id: 2, title: 'Product', link: '/product' },
-  { id: 3, title: 'Contact', link: '/contact' },
-  { id: 4, title: 'About', link: '/about' },
+  { id: 1, title: "Home", link: "#home" },
+  { id: 2, title: "Product", link: "/product" },
+  { id: 3, title: "Contact", link: "/contact" },
+  { id: 4, title: "About", link: "/about" },
 ];
 
 const Navbar = () => {
   const [open, setOpen] = React.useState(false);
-  const [searchTerm, setSearchTerm] = React.useState('');
+  const [searchTerm, setSearchTerm] = React.useState("");
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -24,7 +24,9 @@ const Navbar = () => {
       const sectionId = menu.link.substring(1);
       if (location.pathname === "/") {
         setTimeout(() => {
-          document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+          document
+            .getElementById(sectionId)
+            ?.scrollIntoView({ behavior: "smooth" });
         }, 100);
       } else {
         navigate("/", { replace: true });
@@ -42,12 +44,12 @@ const Navbar = () => {
     setOpen(false);
   };
 
-React.useEffect(() => {
+  React.useEffect(() => {
     if (location.pathname !== "/product") {
       setSearchTerm("");
     }
   }, [location.pathname]);
-  
+
   const handleSearch = (e) => {
     if (e.key === "Enter" && searchTerm.trim() !== "") {
       navigate(`/product?search=${encodeURIComponent(searchTerm)}`);

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Table, Button, Image, Card, Spin } from 'antd';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import { URL_BANNER } from '../../utils/Endpoint';
+import React, { useEffect, useState } from "react";
+import { Table, Button, Image, Card, Spin } from "antd";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { URL_BANNER } from "../../utils/Endpoint";
 
 const Banners = () => {
   const [banners, setBanners] = useState([]);
@@ -30,8 +30,8 @@ const Banners = () => {
       setIsMobile(window.innerWidth < 768);
     };
     handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleDelete = (id) => {
@@ -63,22 +63,22 @@ const Banners = () => {
     {
       title: "Action",
       render: (_, record) => (
-      <>
-        <Button type="primary">
-          <Link to={`/dashboard/banners/${record?._id}`}>Update</Link>
-        </Button>
-        <Button
-          className="ml-2 mt-2"
-          type="primary"
-          danger
-          onClick={() => handleDelete(record?._id)}
-        >
-          Delete
-        </Button>
-      </>
-    ),
-  },
-];
+        <>
+          <Button type="primary">
+            <Link to={`/dashboard/banners/${record?._id}`}>Update</Link>
+          </Button>
+          <Button
+            className="ml-2 mt-2"
+            type="primary"
+            danger
+            onClick={() => handleDelete(record?._id)}
+          >
+            Delete
+          </Button>
+        </>
+      ),
+    },
+  ];
 
   return (
     <div>
@@ -98,22 +98,28 @@ const Banners = () => {
           {banners.map((banner) => (
             <Card key={banner._id}>
               <Image src={banner.thumbnail} width={120} />
-                <p className="mt-2"><strong>Diskon:</strong> {banner.discount}</p>
-                  <p><strong>Description 1:</strong> {banner.description1}</p>
-                    <p><strong>Description 2:</strong> {banner.description2}</p>
-                    <div className="flex gap-2 mt-2">
-                      <Button type="primary">
-                        <Link to={`/dashboard/banners/${banner._id}`}>Update</Link>
-                      </Button>
-                      <Button
-                        type="primary"
-                        danger
-                        onClick={() => handleDelete(banner._id)}
-                        >
-                        Delete
-                      </Button>
-                    </div>
-              </Card>
+              <p className="mt-2">
+                <strong>Diskon:</strong> {banner.discount}
+              </p>
+              <p>
+                <strong>Description 1:</strong> {banner.description1}
+              </p>
+              <p>
+                <strong>Description 2:</strong> {banner.description2}
+              </p>
+              <div className="flex gap-2 mt-2">
+                <Button type="primary">
+                  <Link to={`/dashboard/banners/${banner._id}`}>Update</Link>
+                </Button>
+                <Button
+                  type="primary"
+                  danger
+                  onClick={() => handleDelete(banner._id)}
+                >
+                  Delete
+                </Button>
+              </div>
+            </Card>
           ))}
         </div>
       ) : (

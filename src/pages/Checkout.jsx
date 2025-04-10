@@ -1,17 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  Card,
-  Button,
-  Input,
-  Form,
-  Col,
-  Row,
-  message,
-} from "antd";
-import {
-  ShoppingCartOutlined,
-  CreditCardOutlined,
-} from "@ant-design/icons";
+import { Card, Button, Input, Form, Col, Row, message } from "antd";
+import { ShoppingCartOutlined, CreditCardOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { URL_PRODUCT, URL_TRANSACTION } from "../utils/Endpoint";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
@@ -40,38 +29,31 @@ const Checkout = () => {
 
   const handleCheckout = async (values) => {
     if (!product) return;
-  
+
     if (quantity > product.stock) {
       message.error("Jumlah melebihi stok yang tersedia");
       return;
     }
-  
-    const finalPrice = product.price - (product.price * (product.discount || 0)) / 100;
-  
+
+    const finalPrice =
+      product.price - (product.price * (product.discount || 0)) / 100;
+
     const data = {
       first_name: values.first_name,
       amount: finalPrice * quantity,
       product_id: product._id,
     };
-  
+
     try {
       setLoading(true);
-  
-      // Update stok & sales dulu sebelum redirect ke midtrans
-      await axios.patch(`${URL_PRODUCT}/${id}`, {
-        sales: (product.sales || 0) + quantity,
-        stock: (product.stock || 0) - quantity,
-      });
-  
-      setProduct((prev) => ({
-        ...prev,
-        sales: (prev.sales || 0) + quantity,
-        stock: (prev.stock || 0) - quantity,
-      }));
-  
+
       // Simpan transaksi dan redirect ke Midtrans
       const res = await axios.post(URL_TRANSACTION, data);
       if (res.data.midtrans_url) {
+        // Simpan quantity ke localStorage sebelum redirect
+        localStorage.setItem("checkoutQuantity", quantity);
+
+        // Redirect ke Midtrans
         window.location.href = res.data.midtrans_url;
       }
     } catch (err) {
@@ -80,7 +62,7 @@ const Checkout = () => {
     } finally {
       setLoading(false);
     }
-  };  
+  };
 
   const finalPrice = product
     ? product.price - (product.price * (product.discount || 0)) / 100
@@ -88,7 +70,9 @@ const Checkout = () => {
 
   return (
     <div className="px-4 py-8 mt-24 max-w-6xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6 text-center text-green-500">Checkout</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center text-green-500">
+        Checkout
+      </h1>
       <Row gutter={[16, 16]} wrap>
         <Col xs={24} md={16}>
           <Card
@@ -97,7 +81,8 @@ const Checkout = () => {
             className="shadow-md"
           >
             <p className="mb-2">
-              <strong>Nama Produk: </strong><span className="font-poppins">{product?.name}</span>
+              <strong>Nama Produk: </strong>
+              <span className="font-poppins">{product?.name}</span>
             </p>
             <p className="mb-2">
               <strong>Harga Produk: </strong>{" "}
@@ -107,8 +92,14 @@ const Checkout = () => {
             </p>
             {product?.discount > 0 && (
               <p className="text-sm font-medium text-gray-500">
-                Harga Asli: <span className="line-through font-bold">Rp {product.price.toLocaleString("id-ID")}</span> &nbsp;
-                Diskon: <span className="text-red-500 font-bold">{product.discount}%</span>
+                Harga Asli:{" "}
+                <span className="line-through font-bold">
+                  Rp {product.price.toLocaleString("id-ID")}
+                </span>{" "}
+                &nbsp; Diskon:{" "}
+                <span className="text-red-500 font-bold">
+                  {product.discount}%
+                </span>
               </p>
             )}
             <hr className="my-5" />
@@ -127,11 +118,7 @@ const Checkout = () => {
             extra={<CreditCardOutlined />}
             className="shadow-md"
           >
-            <Form
-              layout="vertical"
-              form={form}
-              onFinish={handleCheckout}
-            >
+            <Form layout="vertical" form={form} onFinish={handleCheckout}>
               <Form.Item
                 name="first_name"
                 label="Nama Anda"

@@ -23,78 +23,81 @@ function Login() {
       .then((res) => {
         console.log("res", res);
         if (res.data.role !== "Admin") {
-            setErrMsg("Anda tidak memiliki akses ke dalam dashhboard admin");
+          setErrMsg("Anda tidak memiliki akses ke dalam dashhboard admin");
         } else {
-            navigate("/dashboard");
+          navigate("/dashboard");
         }
         setLoading(false);
 
         localStorage.setItem("token", res.data.token);
-    })
-    .catch((err) => {
+      })
+      .catch((err) => {
         // console.log('err', err.response.data.message);
         setErrMsg(err.response.data.message);
         setLoading(false);
-    });
+      });
   };
 
   return (
     <>
-    {errMsg !== "" && (
+      {errMsg !== "" && (
         <div style={{ padding: "20px" }}>
-            <Alert message={errMsg} type='error' />
+          <Alert message={errMsg} type="error" />
         </div>
-    )}
-    <div className='flex items-center justify-center min-h-screen bg-gray-100'>
-        <div className='bg-white p-8 rounded-lg shadow-md w-full max-w-md'>
-            <h2 className='text-2xl font-bold text-center mb-6'>Login</h2>
-            <Form
+      )}
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+          <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
+          <Form
             form={form}
             onFinish={handleSubmit}
-            autoComplete='off' // Nonaktifkan autocomplete
-            layout='vertical' // Membuat label form di atas input
+            autoComplete="off" // Nonaktifkan autocomplete
+            layout="vertical" // Membuat label form di atas input
+          >
+            <Form.Item
+              label="Email"
+              name="email"
+              rules={[{ required: true, message: "Please input your email!" }]}
             >
-            <Form.Item
-            label='Email'
-            name='email'
-            rules={[{ required: true, message: "Please input your email!" }]}>
-            <Input
-            prefix={<UserOutlined />}
-            placeholder='Email'
-            size='large'
-            autoComplete='off'
-            />
+              <Input
+                prefix={<UserOutlined />}
+                placeholder="Email"
+                size="large"
+                autoComplete="off"
+              />
             </Form.Item>
-            
+
             <Form.Item
-            label='Password'
-            name='password'
-            rules={[
+              label="Password"
+              name="password"
+              rules={[
                 { required: true, message: "Please input your password!" },
-            ]}>
-            <Input.Password
-            prefix={<LockOutlined />}
-            placeholder='Password'
-            size='large'
-            autoComplete='off'
-            />
+              ]}
+            >
+              <Input.Password
+                prefix={<LockOutlined />}
+                placeholder="Password"
+                size="large"
+                autoComplete="off"
+              />
             </Form.Item>
 
             <Form.Item>
-            <Button
-            type='primary'
-            htmlType='submit'
-            block
-            loading={loading}
-            size='large'>
-            Login
-            </Button>
+              <Button
+                type="primary"
+                htmlType="submit"
+                block
+                loading={loading}
+                size="large"
+              >
+                Login
+              </Button>
             </Form.Item>
-            </Form>
+          </Form>
         </div>
-        </div>
+      </div>
     </>
-    );
+  );
 }
 
-  export default Login;
+export default Login;

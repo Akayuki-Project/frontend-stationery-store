@@ -44,14 +44,14 @@ const Product = () => {
   };
 
   return (
-    <section className="container flex flex-col min-h-screen mx-auto py-12 px-6 md:px-0 overflow-hidden">
+    <section className="container flex flex-col min-h-screen mx-auto py-6 px-6 md:px-0 overflow-hidden">
       <div className="mb-6">
         <input
           type="text"
           placeholder="Cari produk..."
           value={searchTerm}
           onChange={handleInputChange}
-          className="w-full md:w-1/2 p-3 border rounded-xl shadow-sm"
+          className="w-full md:w-1/2 p-2 border rounded-xl shadow-sm"
         />
       </div>
 

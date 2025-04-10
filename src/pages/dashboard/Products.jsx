@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Table, Button, Image, Card, Spin } from 'antd';
-import axios from 'axios';
-import { URL_PRODUCT } from '../../utils/Endpoint';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Table, Button, Image, Card, Spin } from "antd";
+import axios from "axios";
+import { URL_PRODUCT } from "../../utils/Endpoint";
+import { Link } from "react-router-dom";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -26,8 +26,8 @@ const Products = () => {
       setIsMobile(window.innerWidth < 768);
     };
     handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleDelete = (id) => {
@@ -39,27 +39,27 @@ const Products = () => {
 
   const columns = [
     {
-      title: 'Thumbnail',
-      dataIndex: 'thumbnail',
+      title: "Thumbnail",
+      dataIndex: "thumbnail",
       render: (_, record) => (
         <Image src={record?.thumbnail} width={100} loading="lazy" />
       ),
     },
     {
-      title: 'Name',
-      dataIndex: 'name',
+      title: "Name",
+      dataIndex: "name",
     },
     {
-      title: 'Price',
-      dataIndex: 'price',
+      title: "Price",
+      dataIndex: "price",
     },
     {
-      title: 'Stock',
-      dataIndex: 'stock',
+      title: "Stock",
+      dataIndex: "stock",
     },
     {
-      title: 'Action',
-      key: 'action',
+      title: "Action",
+      key: "action",
       render: (_, record) => (
         <>
           <Button type="primary">
@@ -96,9 +96,15 @@ const Products = () => {
           {products.map((product) => (
             <Card key={product._id}>
               <Image src={product.thumbnail} width={120} />
-              <p className="mt-2"><strong>Name:</strong> {product.name}</p>
-              <p><strong>Price:</strong> {product.price}</p>
-              <p><strong>Stock:</strong> {product.stock}</p>
+              <p className="mt-2">
+                <strong>Name:</strong> {product.name}
+              </p>
+              <p>
+                <strong>Price:</strong> {product.price}
+              </p>
+              <p>
+                <strong>Stock:</strong> {product.stock}
+              </p>
               <div className="flex gap-2 mt-2">
                 <Button type="primary">
                   <Link to={`/dashboard/products/${product._id}`}>Update</Link>

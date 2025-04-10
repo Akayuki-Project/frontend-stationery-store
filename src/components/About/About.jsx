@@ -18,7 +18,9 @@ const About = () => {
   }, [index]);
 
   const prevSlide = () => {
-    setIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
+    setIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
   };
 
   const nextSlide = () => {
@@ -44,9 +46,9 @@ const About = () => {
             untuk memenuhi kebutuhan Anda.
           </p>
           <p className="text-lg mb-6">
-            Kami ingin membuat belanja alat tulis jadi lebih mudah, menyenangkan,
-            dan tentunya hemat! Terima kasih sudah mempercayakan kebutuhan alat
-            tulis Anda kepada kami. 😊
+            Kami ingin membuat belanja alat tulis jadi lebih mudah,
+            menyenangkan, dan tentunya hemat! Terima kasih sudah mempercayakan
+            kebutuhan alat tulis Anda kepada kami. 😊
           </p>
           <p className="text-lg flex items-center gap-3">
             📍 Yuk, cek koleksi kami dan temukan alat tulis favoritmu!
@@ -54,11 +56,12 @@ const About = () => {
         </motion.div>
 
         {/* Image Slider */}
-        <motion.div 
-        initial={{ opacity: 0, x: 100 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.7, delay: 0.2 }}
-        className="relative flex flex-col items-center justify-center w-full max-w-[320px] lg:max-w-lg">
+        <motion.div
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="relative flex flex-col items-center justify-center w-full max-w-[420px] lg:max-w-lg"
+        >
           {/* Tombol Navigasi Kiri */}
           <button
             className="absolute left-[-50px] bg-gray-800 bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition"
@@ -74,7 +77,12 @@ const About = () => {
               style={{ transform: `translateX(-${index * 100}%)` }}
             >
               {images.map((img, i) => (
-                <img key={i} src={img} alt="About" className="w-full flex-shrink-0" />
+                <img
+                  key={i}
+                  src={img}
+                  alt="About"
+                  className="w-full flex-shrink-0"
+                />
               ))}
             </div>
           </div>
