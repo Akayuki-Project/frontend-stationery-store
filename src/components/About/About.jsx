@@ -60,7 +60,7 @@ const About = () => {
           initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="relative flex flex-col items-center justify-center w-full max-w-[420px] lg:max-w-lg"
+          className="relative flex flex-col items-center justify-center w-full max-w-[360px] lg:max-w-lg"
         >
           {/* Tombol Navigasi Kiri */}
           <button
