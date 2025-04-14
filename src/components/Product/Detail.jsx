@@ -45,22 +45,32 @@ const DetailProduct = () => {
   };
 
   const handleRating = async (ratingValue) => {
-    if (userRating > 0) return;
-
+    const prevRating = parseInt(localStorage.getItem(`rated_${id}`)) || 0;
+  
     try {
-      const updatedTotalRating = (product.totalRating || 0) + ratingValue;
-      const updatedRatingCount = (product.ratingCount || 0) + 1;
+      let updatedTotalRating = (product.totalRating || 0);
+      let updatedRatingCount = (product.ratingCount || 0);
+  
+      // Jika sebelumnya sudah pernah rating
+      if (prevRating > 0) {
+        updatedTotalRating = updatedTotalRating - prevRating + ratingValue;
+      } else {
+        // Kalau belum pernah rating
+        updatedTotalRating += ratingValue;
+        updatedRatingCount += 1;
+      }
+  
       const newAverageRating = updatedTotalRating / updatedRatingCount;
-
+  
       await axios.patch(`${URL_PRODUCT}/${id}`, {
         totalRating: updatedTotalRating,
         ratingCount: updatedRatingCount,
         rating: newAverageRating,
       });
-
+  
       setUserRating(ratingValue);
       localStorage.setItem(`rated_${id}`, ratingValue);
-
+  
       setProduct((prev) => ({
         ...prev,
         totalRating: updatedTotalRating,
@@ -68,9 +78,9 @@ const DetailProduct = () => {
         rating: newAverageRating,
       }));
     } catch (err) {
-      console.error("Gagal memberikan rating", err);
+      console.error("Gagal mengubah rating", err);
     }
-  };
+  };  
 
   if (!product) {
     return <p className="text-center py-20">Memuat detail produk... 🌀</p>;
