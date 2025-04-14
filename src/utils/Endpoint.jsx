@@ -1,4 +1,4 @@
-const BASEURL = VITE_API_URL;
+const BASEURL = https://api-stationery-store.vercel.app
 
 export const URL_SIGNIN = `${BASEURL}/api/auth/signin`;
 export const URL_PRODUCT = `${BASEURL}/api/products`;
