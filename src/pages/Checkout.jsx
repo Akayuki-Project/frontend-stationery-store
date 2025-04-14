@@ -48,7 +48,7 @@ const Checkout = () => {
       setLoading(true);
   
       const res = await axios.post(URL_TRANSACTION, data);
-      const snapToken = res.data.midtrans_url;
+      const snapToken = res.data.snap_token;
 
       // Simpan jumlah ke localStorage
       localStorage.setItem("checkoutQuantity", quantity);
