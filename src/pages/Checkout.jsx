@@ -29,40 +29,60 @@ const Checkout = () => {
 
   const handleCheckout = async (values) => {
     if (!product) return;
-
+  
     if (quantity > product.stock) {
       message.error("Jumlah melebihi stok yang tersedia");
       return;
     }
-
+  
     const finalPrice =
       product.price - (product.price * (product.discount || 0)) / 100;
-
+  
     const data = {
       first_name: values.first_name,
       amount: finalPrice * quantity,
       product_id: product._id,
     };
-
+  
     try {
       setLoading(true);
-
-      // Simpan transaksi dan redirect ke Midtrans
+  
       const res = await axios.post(URL_TRANSACTION, data);
-      if (res.data.midtrans_url) {
-        // Simpan quantity ke localStorage sebelum redirect
-        localStorage.setItem("checkoutQuantity", quantity);
+      const snapToken = res.data.snap_token;
 
-        // Redirect ke Midtrans
-        window.location.href = res.data.midtrans_url;
+      if (typeof window.snap === "undefined") {
+        message.error("Midtrans belum siap. Coba lagi ya~ 😢");
+        return;
       }
+      // Simpan jumlah ke localStorage
+      localStorage.setItem("checkoutQuantity", quantity);
+      
+      // Jalankan Snap popup langsung dari halaman
+      window.snap.pay(snapToken, {
+        onSuccess: function (result) {
+          console.log("Pembayaran sukses", result);
+          navigate(`/success-payment/${product._id}`);
+        },
+        onPending: function (result) {
+          console.log("Menunggu pembayaran", result);
+        },
+        onError: function (result) {
+          console.error("Pembayaran gagal", result);
+          message.error("Terjadi kesalahan saat memproses pembayaran.");
+        },
+        onClose: function () {
+          console.log("Popup ditutup oleh pengguna");
+          message.warning("Pembayaran dibatalkan");
+        },
+      });
+
     } catch (err) {
       message.error("Gagal melakukan checkout");
       console.error("Checkout error", err?.response?.data || err.message);
     } finally {
       setLoading(false);
     }
-  };
+  };  
 
   const finalPrice = product
     ? product.price - (product.price * (product.discount || 0)) / 100
