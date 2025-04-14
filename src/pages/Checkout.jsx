@@ -48,7 +48,7 @@ const Checkout = () => {
       setLoading(true);
   
       const res = await axios.post(URL_TRANSACTION, data);
-      const snapToken = res.data.snap_token;
+      const snapToken = res.data.midtrans_url;
 
       if (typeof window.snap === "undefined") {
         message.error("Midtrans belum siap. Coba lagi ya~ 😢");
