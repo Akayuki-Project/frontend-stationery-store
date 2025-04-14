@@ -36,7 +36,7 @@ const Promo = () => {
   useEffect(() => {
     const fetchPromo = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/products");
+        const response = await axios.get("https://backend-stationery-store.vercel.app/api/products");
         setPromoList(response.data);
       } catch (err) {
         console.error("Gagal ambil data promo:", err);
@@ -49,7 +49,7 @@ const Promo = () => {
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/banners");
+        const response = await axios.get("https://backend-stationery-store.vercel.app/api/banners");
         setBanners(response.data);
       } catch (err) {
         console.error("Gagal ambil data banner:", err);
