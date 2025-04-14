@@ -50,10 +50,6 @@ const Checkout = () => {
       const res = await axios.post(URL_TRANSACTION, data);
       const snapToken = res.data.midtrans_url;
 
-      if (typeof window.snap === "undefined") {
-        message.error("Midtrans belum siap. Coba lagi ya~ 😢");
-        return;
-      }
       // Simpan jumlah ke localStorage
       localStorage.setItem("checkoutQuantity", quantity);
       
