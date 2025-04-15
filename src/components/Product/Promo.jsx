@@ -116,7 +116,7 @@ const Promo = () => {
   };
 
   return (
-    <div id="promo" className="max-w-8xl mx-auto py-24 p-6">
+    <div id="promo" className="max-w-8xl mx-auto py-26 p-6">
       {/* Banner Section */}
       <div className="flex items-center justify-between mb-6">
         <motion.h2
