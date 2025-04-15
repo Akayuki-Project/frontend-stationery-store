@@ -60,7 +60,7 @@ const Responsive = ({ open, setOpen }) => {
           className="top-20 left-0 w-full z-20 fixed"
         >
           <div className="text-xl font-semibold uppercase bg-primary text-white py-10 m-6 rounded-3xl">
-            <ul className="flex flex-col items-center gap-10">
+            <ul className="flex flex-col items-center gap-7">
               {NavbarMenu.map((menu) => (
                 <li key={menu.id}>
                   <button
