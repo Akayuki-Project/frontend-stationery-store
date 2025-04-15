@@ -64,7 +64,7 @@ const About = () => {
         >
           {/* Tombol Navigasi Kiri */}
           <button
-            className="absolute left-[-70px] md:left-[-50px] bg-gray-800 bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition"
+            className="absolute left-[-60px] md:left-[-50px] bg-gray-800 bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition"
             onClick={prevSlide}
           >
             <ChevronLeft size={24} />
@@ -89,7 +89,7 @@ const About = () => {
 
           {/* Tombol Navigasi Kanan */}
           <button
-            className="absolute right-[-70px] md:right-[-50px] bg-gray-800 bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition"
+            className="absolute right-[-60px] md:right-[-50px] bg-gray-800 bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition"
             onClick={nextSlide}
           >
             <ChevronRight size={24} />
