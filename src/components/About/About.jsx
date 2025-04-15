@@ -28,7 +28,7 @@ const About = () => {
   };
 
   return (
-    <section className="bg-secondary text-white py-40 px-6 overflow-hidden">
+    <section className="bg-secondary text-white py-32 md:py-40 px-6 overflow-hidden">
       <div className="container mx-auto flex flex-col-reverse lg:flex-row items-center justify-between gap-12">
         {/* Text */}
         <motion.div
