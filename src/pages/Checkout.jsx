@@ -85,7 +85,7 @@ const Checkout = () => {
     : 0;
 
   return (
-    <div className="px-4 py-8 mt-24 max-w-6xl mx-auto">
+    <div className="px-4 py-8 mt-24 max-w-6xl mx-auto min-h-screen">
       <h1 className="text-2xl font-bold mb-6 text-center text-green-500">
         Checkout
       </h1>
