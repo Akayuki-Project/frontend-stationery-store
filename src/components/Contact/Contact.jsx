@@ -48,7 +48,7 @@ const Contact = () => {
   };
 
   return (
-    <section className="bg-secondary text-white py-40 px-6 overflow-hidden">
+    <section className="bg-secondary text-white py-28 md:py-40 px-6 overflow-hidden">
       <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
         {/* Text & Icons */}
         <motion.div
