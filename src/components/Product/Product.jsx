@@ -45,7 +45,7 @@ const Product = () => {
 
   return (
     <section className="container flex flex-col min-h-screen mx-auto py-6 px-6 md:px-0 overflow-hidden">
-      <div className="mb-6">
+      <div className="mb-4 md:mb-6">
         <input
           type="text"
           placeholder="Cari produk..."
