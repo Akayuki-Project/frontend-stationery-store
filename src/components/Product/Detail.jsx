@@ -98,7 +98,7 @@ const DetailProduct = () => {
             <img
               src={product.thumbnail}
               alt={product.name}
-              className="w-full h-auto rounded-lg object-cover cursor-zoom-in"
+              className="w-full h-auto rounded-lg object-cover cursor-zoom-in shadow-md"
             />
           </Zoom>
         </div>
