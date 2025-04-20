@@ -103,14 +103,14 @@ const Checkout = () => {
             <p className="mb-2">
               <strong>Harga Produk: </strong>{" "}
               <span className="font-bold">
-                Rp {finalPrice.toLocaleString("id-ID")}
+                Rp{finalPrice.toLocaleString("id-ID")}
               </span>
             </p>
             {product?.discount > 0 && (
               <p className="text-sm font-medium text-gray-500">
                 Harga Asli:{" "}
                 <span className="line-through font-bold">
-                  Rp {product.price.toLocaleString("id-ID")}
+                  Rp{product.price.toLocaleString("id-ID")}
                 </span>{" "}
                 &nbsp; Diskon:{" "}
                 <span className="text-red-500 font-bold">
@@ -123,7 +123,7 @@ const Checkout = () => {
               <strong>Jumlah:</strong> {quantity}
             </p>
             <p className="text-xl font-semibold mt-2">
-              Total: Rp {(finalPrice * quantity).toLocaleString("id-ID")}
+              Total: Rp{(finalPrice * quantity).toLocaleString("id-ID")}
             </p>
           </Card>
         </Col>
