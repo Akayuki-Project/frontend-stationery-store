@@ -112,7 +112,7 @@ const UpdateProduct = () => {
           label="Price"
           rules={[{ required: true, message: "Please input product price!" }]}
         >
-          <Input placeholder="Enter product price" />
+          <Input type="number" placeholder="Enter product price" />
         </Form.Item>
 
         {/* <Form.Item
